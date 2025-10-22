@@ -73,9 +73,9 @@ jobs:
           
           JOB_ID=$(aws signer start-signing-job \
             --source "image=${IMAGE_URI}" \
-            --profile-name "default" \
-            --destination "ecr" \
+            --destination '{"type": "ecr"}' \
             --region ${{ env.AWS_REGION }} \
+            --profile default \
             --query 'jobId' --output text)
 
           echo "Started signing job: $JOB_ID"
