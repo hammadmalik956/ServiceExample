@@ -56,7 +56,7 @@ module "k8s_workload_nodes" {
   iam_role_description        = each.value.iam_role_description
   iam_role_policies           = each.value.iam_role_policies
 
-  user_data_base64            = base64encode(local.user_data)
+  user_data_base64            = base64encode(local.master_user_data)
   user_data_replace_on_change = each.value.user_data_replace_on_change
 
   enable_volume_tags = each.value.enable_volume_tags
@@ -67,33 +67,33 @@ module "k8s_workload_nodes" {
   tags = merge(local.tags, each.value.tags)
 }
 
-# module "k8s_workload_nodes_slave" {
-#   source = "./modules/ec2"
+module "k8s_workload_nodes_slave" {
+  source = "./modules/ec2"
 
-#   for_each                    = var.ec2.slaves
-#   name                        = each.value.name
-#   ami                         = data.aws_ami.ubuntu_latest.id
-#   instance_type               = each.value.instance_type
-#   availability_zone           = element(module.vpc.azs, 0)
-#   key_name                    = each.value.key_name
-#   associate_public_ip_address = each.value.associate_public_ip_address
-#   subnet_id                   = element(module.vpc.public_subnets, 0)
-#   vpc_security_group_ids      = [module.k8s_sg_shells["${each.key}_sg"].id]
-#   create_security_group       = each.value.create_security_group
-
-
-#   create_iam_instance_profile = each.value.create_iam_instance_profile
-#   iam_role_description        = each.value.iam_role_description
-#   iam_role_policies           = each.value.iam_role_policies
-
-#   user_data_base64            = base64encode(local.user_data)
-#   user_data_replace_on_change = each.value.user_data_replace_on_change
-
-#   enable_volume_tags = each.value.enable_volume_tags
-#   root_block_device  = each.value.root_block_device
+  for_each                    = var.ec2.slaves
+  name                        = each.value.name
+  ami                         = data.aws_ami.ubuntu_latest.id
+  instance_type               = each.value.instance_type
+  availability_zone           = element(module.vpc.azs, 0)
+  key_name                    = each.value.key_name
+  associate_public_ip_address = each.value.associate_public_ip_address
+  subnet_id                   = element(module.vpc.public_subnets, 0)
+  vpc_security_group_ids      = [module.k8s_sg_shells["${each.key}_sg"].id]
+  create_security_group       = each.value.create_security_group
 
 
+  create_iam_instance_profile = each.value.create_iam_instance_profile
+  iam_role_description        = each.value.iam_role_description
+  iam_role_policies           = each.value.iam_role_policies
 
-#   tags = merge(local.tags, each.value.tags)
-# }
+  user_data_base64            = base64encode(local.slaves_user_data)
+  user_data_replace_on_change = each.value.user_data_replace_on_change
+
+  enable_volume_tags = each.value.enable_volume_tags
+  root_block_device  = each.value.root_block_device
+
+  tags = merge(local.tags, each.value.tags)
+
+  depends_on = [ module.k8s_workload_nodes ]
+}
 

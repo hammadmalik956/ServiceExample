@@ -3,10 +3,8 @@ locals {
     Environment     = var.env
     SemanticVersion = var.semantic_version
   }
-  user_data = templatefile("${path.module}/scripts/master-init.sh", {
-    myenv = var.env
-
-  })
+  master_user_data = templatefile("${path.module}/scripts/master-init.sh", {myenv = var.env})
+  slaves_user_data = templatefile("${path.module}/scripts/slaves-init.sh", {myenv = var.env})
 
   k8s_sg_ids = {
     for sg_key, mod in module.k8s_sg_shells : sg_key => mod.id

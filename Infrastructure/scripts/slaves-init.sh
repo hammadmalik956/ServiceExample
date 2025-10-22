@@ -2,6 +2,7 @@
 
 set -ex
 
+
 swapoff -a
 sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
@@ -77,31 +78,6 @@ kubectl version --client
 
 
 crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
-aws_metadata_token=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
-PRIVATE_IP=`curl -H "X-aws-ec2-metadata-token: $aws_metadata_token" http://169.254.169.254/latest/meta-data/local-ipv4`
-echo "My private IP is $PRIVATE_IP"
-
-kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address=$PRIVATE_IP --node-name master
-
-mkdir -p $HOME/.kube
-cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-chown $(id -u):$(id -g) $HOME/.kube/config
-
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.4/manifests/tigera-operator.yaml
-
-
-while ! kubectl get crd installations.operator.tigera.io &>/dev/null; do
-  echo "Waiting for Calico CRDs..."
-  sleep 10
-done
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.4/manifests/custom-resources.yaml -O
-
-
-kubectl apply -f custom-resources.yaml
-
-mkdir -p /home/ubuntu/.kube
-cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
-chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
 
 #installing aws cli for getting the join command from ssm parameter
@@ -111,14 +87,13 @@ unzip awscliv2.zip
 sudo ./aws/install
 aws --version
 
-kubeadm token create --print-join-command > /home/ubuntu/join_command.sh
-PARAM_NAME="/prod/k8s/JOIN_COMMAND"
-REGION="us-east-2"  
-aws ssm put-parameter \
-  --name "$PARAM_NAME" \
-  --type "String" \
-  --value "$(cat /home/ubuntu/join_command.sh)" \
-  --overwrite \
-  --region "$REGION"
+# Fetch the join command from SSM Parameter Store
+JOIN_COMMAND=$(aws ssm get-parameter \
+  --name "/prod/k8s/JOIN_COMMAND" \
+  --query "Parameter.Value" \
+  --output text \
+  --region us-east-2)
 
-echo "✅ Kubeadm join command successfully pushed to SSM parameter: $PARAM_NAME"
+# Execute the join command
+echo "Running kubeadm join..."
+sudo bash -c "$JOIN_COMMAND"
