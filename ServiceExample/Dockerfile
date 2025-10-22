@@ -11,6 +11,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 COPY . /src/
 WORKDIR /src/ServiceExample
+RUN ls -al
 RUN dotnet restore ServiceExample.csproj
 RUN dotnet build "ServiceExample.csproj" -c Release -o /app/build
 
