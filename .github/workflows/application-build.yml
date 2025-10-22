@@ -41,7 +41,7 @@ jobs:
 
       - name: Run Unit Tests
         working-directory: UnitTests
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test 
 
       - name: Login to Amazon ECR
         id: ecr-login
