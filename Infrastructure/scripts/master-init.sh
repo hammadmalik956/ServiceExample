@@ -112,13 +112,24 @@ sudo ./aws/install
 aws --version
 
 kubeadm token create --print-join-command > /home/ubuntu/join_command.sh
+
+# Fetch IMDSv2 token
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
+  -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+# Export credentials for AWS CLI to use metadata with IMDSv2
+export AWS_METADATA_SERVICE_TIMEOUT=5
+export AWS_METADATA_SERVICE_NUM_ATTEMPTS=3
+export AWS_EC2_METADATA_TOKEN=$TOKEN
+
 PARAM_NAME="/prod/k8s/JOIN_COMMAND"
 REGION="us-east-2"  
 aws ssm put-parameter \
   --name "$PARAM_NAME" \
-  --type "String" \
+  --type "SecureString" \
   --value "$(cat /home/ubuntu/join_command.sh)" \
   --overwrite \
   --region "$REGION"
 
-echo "✅ Kubeadm join command successfully pushed to SSM parameter: $PARAM_NAME"
+echo "Kubeadm join command successfully pushed to SSM parameter: $PARAM_NAME"
+

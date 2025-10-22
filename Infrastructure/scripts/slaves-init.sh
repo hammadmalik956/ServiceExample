@@ -87,9 +87,20 @@ unzip awscliv2.zip
 sudo ./aws/install
 aws --version
 
+# Fetch IMDSv2 token
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
+  -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+# Export credentials for AWS CLI to use metadata with IMDSv2
+export AWS_METADATA_SERVICE_TIMEOUT=5
+export AWS_METADATA_SERVICE_NUM_ATTEMPTS=3
+export AWS_EC2_METADATA_TOKEN=$TOKEN
+
+sleep 100
 # Fetch the join command from SSM Parameter Store
 JOIN_COMMAND=$(aws ssm get-parameter \
   --name "/prod/k8s/JOIN_COMMAND" \
+  --with-decryption \
   --query "Parameter.Value" \
   --output text \
   --region us-east-2)
@@ -97,3 +108,5 @@ JOIN_COMMAND=$(aws ssm get-parameter \
 # Execute the join command
 echo "Running kubeadm join..."
 sudo bash -c "$JOIN_COMMAND"
+
+

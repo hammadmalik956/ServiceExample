@@ -14,87 +14,90 @@ vpc = {
 }
 
 ec2 = {
-  masters= {
-  master = {
-    name                        = "k8s-master"
-    key_name                    = "mirsys-key"
-    create_security_group       = false
-    associate_public_ip_address = true
-    instance_type               = "t3.medium"
-    create_iam_instance_profile = false
-    iam_role_description        = "IAM role for EC2 instance"
-    iam_role_policies = {
-      AdministratorAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
-    }
-    user_data_replace_on_change = true
-    enable_volume_tags          = false
-    root_block_device = {
-      encrypted  = true
-      type       = "gp3"
-      throughput = 200
-      size       = 50
+  masters = {
+    master = {
+      name                        = "k8s-master"
+      key_name                    = "mirsys-key"
+      create_security_group       = false
+      associate_public_ip_address = true
+      instance_type               = "t3.medium"
+      iam_role_use_name_prefix    = false
+      create_iam_instance_profile = true
+      iam_role_description        = "IAM role for EC2 instance"
+      iam_role_policies = {
+        SSMParameterStoreAccess = "arn:aws:iam::055545057328:policy/SSMParameterPolici"
+      }
+      user_data_replace_on_change = true
+      enable_volume_tags          = false
+      root_block_device = {
+        encrypted  = true
+        type       = "gp3"
+        throughput = 200
+        size       = 50
+        tags = {
+          Name = "master-root-block"
+        }
+      }
       tags = {
-        Name = "master-root-block"
+
       }
     }
-    tags = {
+  }
+  slaves = {
+    slave1 = {
+      name                        = "k8s-slave1"
+      instance_type               = "t3.medium"
+      key_name                    = "mirsys-key"
+      associate_public_ip_address = true
+      create_security_group       = false
+      create_iam_instance_profile = true
+      iam_role_use_name_prefix    = false
+      iam_role_description        = "IAM role for EC2 instance"
+      iam_role_policies = {
+        SSMParameterStoreAccess = "arn:aws:iam::055545057328:policy/SSMParameterPolici"
+      }
+      user_data_replace_on_change = true
+      enable_volume_tags          = false
+      root_block_device = {
+        encrypted  = true
+        type       = "gp3"
+        throughput = 200
+        size       = 50
+        tags = {
+          Name = "slave1-root-block"
+        }
+      }
+      tags = {
+
+      }
+    }
+    slave2 = {
+      name                        = "k8s-slave2"
+      associate_public_ip_address = true
+      key_name                    = "mirsys-key"
+      instance_type               = "t3.medium"
+      create_security_group       = false
+      create_iam_instance_profile = true
+      iam_role_description        = "IAM role for EC2 instance"
+      iam_role_use_name_prefix    = false
+      iam_role_policies = {
+        SSMParameterStoreAccess = "arn:aws:iam::055545057328:policy/SSMParameterPolici"
+      }
+      user_data_replace_on_change = true
+      enable_volume_tags          = false
+      root_block_device = {
+        encrypted  = true
+        type       = "gp3"
+        throughput = 200
+        size       = 50
+        tags = {
+          Name = "slave2-root-block"
+        }
+      }
+      tags = {}
 
     }
   }
-  }
-slaves ={
-  slave1 = {
-    name                        = "k8s-slave1"
-    instance_type               = "t3.medium"
-    key_name                    = "mirsys-key"
-    associate_public_ip_address = true
-    create_security_group       = false
-    create_iam_instance_profile = false
-    iam_role_description        = "IAM role for EC2 instance"
-    iam_role_policies = {
-      AdministratorAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
-    }
-    user_data_replace_on_change = true
-    enable_volume_tags          = false
-    root_block_device = {
-      encrypted  = true
-      type       = "gp3"
-      throughput = 200
-      size       = 50
-      tags = {
-        Name = "slave1-root-block"
-      }
-    }
-    tags = {
-
-    }
-  }
-  slave2 = {
-    name                        = "k8s-slave2"
-    associate_public_ip_address = true
-    key_name                    = "mirsys-key"
-    instance_type               = "t3.medium"
-    create_security_group       = false
-    create_iam_instance_profile = false
-    iam_role_description        = "IAM role for EC2 instance"
-    iam_role_policies = {
-      AdministratorAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
-    }
-    user_data_replace_on_change = true
-    enable_volume_tags          = false
-    root_block_device = {
-      encrypted  = true
-      type       = "gp3"
-      throughput = 200
-      size       = 50
-      tags = {
-        Name = "slave2-root-block"
-      }
-    }
-    tags = {}
-
-  }
-}
 }
 
 security_groups = {
