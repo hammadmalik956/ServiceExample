@@ -14,6 +14,7 @@ vpc = {
 }
 
 ec2 = {
+  masters= {
   master = {
     name                        = "k8s-master"
     key_name                    = "mirsys-key"
@@ -40,7 +41,8 @@ ec2 = {
 
     }
   }
-
+  }
+slaves ={
   slave1 = {
     name                        = "k8s-slave1"
     instance_type               = "t3.medium"
@@ -92,6 +94,7 @@ ec2 = {
     tags = {}
 
   }
+}
 }
 
 security_groups = {

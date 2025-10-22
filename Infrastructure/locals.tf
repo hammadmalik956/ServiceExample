@@ -3,8 +3,9 @@ locals {
     Environment     = var.env
     SemanticVersion = var.semantic_version
   }
-  user_data = templatefile("${path.module}/scripts/userdata.sh", {
+  user_data = templatefile("${path.module}/scripts/master-init.sh", {
     myenv = var.env
+
   })
 
   k8s_sg_ids = {
