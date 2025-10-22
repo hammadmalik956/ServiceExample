@@ -10,7 +10,6 @@ using ServiceExample.Models;
 using ServiceExample.Repository;
 using StackExchange.Redis;
 
-
 namespace UnitTests;
 
 public class UnitTests
