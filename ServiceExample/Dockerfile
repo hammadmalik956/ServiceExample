@@ -10,7 +10,7 @@ EXPOSE 9080
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 COPY . /src/
-WORKDIR /src/ServiceExample
+# WORKDIR /src/ServiceExample
 RUN dotnet restore ServiceExample.csproj
 RUN dotnet build "ServiceExample.csproj" -c Release -o /app/build
 
