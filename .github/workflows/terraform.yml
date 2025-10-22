@@ -1,0 +1,64 @@
+name: Terraform Infra Provisioning
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Select whether to apply or destroy infrastructure"
+        required: true
+        type: choice
+        options:
+          - apply
+          - destroy
+        default: apply
+
+permissions:
+  id-token: write   
+  contents: read    
+
+env:
+  TF_WORKING_DIR: infrastructure
+  AWS_REGION: us-east-2   
+
+jobs:
+  terraform:
+    name: Terraform ${{ github.event.inputs.action }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::055545057328:oidc-provider/token.actions.githubusercontent.com
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install Latest Terraform
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gnupg software-properties-common curl
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update -y
+          sudo apt-get install -y terraform
+          terraform version
+
+      - name: Initialize Terraform
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform init -input=false
+
+      - name: Validate Terraform
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform validate
+
+      - name: Apply Infrastructure
+        if: ${{ github.event.inputs.action == 'apply' }}
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform apply -auto-approve --var-file=configs/prod.tfvars
+
+      - name: Destroy Infrastructure
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform destroy -auto-approve --var-file=configs/prod.tfvars
