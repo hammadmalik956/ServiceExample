@@ -56,7 +56,7 @@ jobs:
       - name: Apply Infrastructure
         if: ${{ github.event.inputs.action == 'apply' }}
         working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform apply -auto-approve --var-file=configs/prod.tfvars
+        run: terraform apply  --var-file=configs/prod.tfvars
 
       - name: Destroy Infrastructure
         if: ${{ github.event.inputs.action == 'destroy' }}
