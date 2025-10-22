@@ -1,0 +1,89 @@
+name: Application CI - Test, Build, Push & Sign
+
+on:
+  push:
+    paths:
+      - 'ServiceExample/**'
+      - 'UnitTests/**'
+
+permissions:
+  id-token: write   
+  contents: read     
+
+env:
+  AWS_REGION: us-east-2           
+  ECR_REPOSITORY: serviceexample
+  DOTNET_VERSION: 9.0
+
+jobs:
+  build-test-push-sign:
+    runs-on: ubuntu-latest
+    name: Test, Build, Push, and Sign Docker Image
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::055545057328:role/gh-oidc-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore .NET Dependencies
+        working-directory: UnitTests
+        run: dotnet restore
+
+      - name: Run Unit Tests
+        working-directory: UnitTests
+        run: dotnet test --no-build --verbosity normal
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker Image
+        working-directory: ServiceExample
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker build -t ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
+
+      - name: Tag Docker Image
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker tag ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG \
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+
+      - name: Push Docker Image to ECR
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker push ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+
+      - name: Sign Docker Image with AWS Signer
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          IMAGE_URI=${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+          
+          echo "Starting AWS Signer signing job for $IMAGE_URI"
+          
+          JOB_ID=$(aws signer start-signing-job \
+            --source "image=${IMAGE_URI}" \
+            --profile-name "default" \
+            --destination "ecr" \
+            --region ${{ env.AWS_REGION }} \
+            --query 'jobId' --output text)
+
+          echo "Started signing job: $JOB_ID"
+
+          # Wait until signing job completes
+          aws signer wait signing-job-completed \
+            --job-id "$JOB_ID" \
+            --region ${{ env.AWS_REGION }}
+
+          echo "Docker image signed successfully: $IMAGE_URI"
+
