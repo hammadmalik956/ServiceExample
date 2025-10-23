@@ -13,6 +13,7 @@ permissions:
 env:
   AWS_REGION: us-east-2           
   ECR_REPOSITORY: serviceexample
+  PUBLIC_ECR_URI: public.ecr.aws/a1f9o5p6
   DOTNET_VERSION: 9.0
 
 jobs:
@@ -43,9 +44,9 @@ jobs:
         working-directory: UnitTests
         run: dotnet test 
 
-      - name: Login to Amazon ECR
-        id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v2
+      - name: Login to Amazon Public ECR
+        run: |
+          aws ecr-public get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${{ env.PUBLIC_ECR_URI }}
 
       - name: Build Docker Image
         working-directory: ServiceExample
@@ -57,13 +58,12 @@ jobs:
         run: |
           IMAGE_TAG=${GITHUB_SHA::7}
           docker tag ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG \
-            ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+            ${{ env.PUBLIC_ECR_URI }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
 
-      - name: Push Docker Image to ECR
+      - name: Push Docker Image to Public ECR
         run: |
           IMAGE_TAG=${GITHUB_SHA::7}
-          
-          docker push ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+          docker push ${{ env.PUBLIC_ECR_URI }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
 
       # - name: Sign Docker Image with AWS Signer
       #   run: |
