@@ -25,7 +25,8 @@ ec2 = {
       create_iam_instance_profile = true
       iam_role_description        = "IAM role for EC2 instance"
       iam_role_policies = {
-        SSMParameterStoreAccess = "arn:aws:iam::055545057328:policy/SSMParameterPolici"
+        SSMParameterStoreAccess = "arn:aws:iam::055545057328:policy/SSMParameterPolici", 
+        ECRAccessPolicy         = "arn:aws:iam::055545057328:policy/ECRAccessPolicy"
       }
       user_data_replace_on_change = true
       enable_volume_tags          = false
@@ -55,6 +56,7 @@ ec2 = {
       iam_role_description        = "IAM role for EC2 instance"
       iam_role_policies = {
         SSMParameterStoreAccess = "arn:aws:iam::055545057328:policy/SSMParameterPolici"
+        ECRAccessPolicy         = "arn:aws:iam::055545057328:policy/ECRAccessPolicy"
       }
       user_data_replace_on_change = true
       enable_volume_tags          = false
@@ -82,6 +84,7 @@ ec2 = {
       iam_role_use_name_prefix    = false
       iam_role_policies = {
         SSMParameterStoreAccess = "arn:aws:iam::055545057328:policy/SSMParameterPolici"
+        ECRAccessPolicy         = "arn:aws:iam::055545057328:policy/ECRAccessPolicy"
       }
       user_data_replace_on_change = true
       enable_volume_tags          = false
@@ -132,6 +135,14 @@ security_groups = {
       {
         source_security_group_id = null
         cidr_blocks              = ["10.0.0.0/16"]
+        description              = "Kubernetes API server access within vpc"
+        from_port                = 6443
+        protocol                 = "tcp"
+        to_port                  = 6443
+      },
+       {
+        source_security_group_id = null
+        cidr_blocks              = ["0.0.0.0/0"]
         description              = "Kubernetes API server access within vpc"
         from_port                = 6443
         protocol                 = "tcp"
