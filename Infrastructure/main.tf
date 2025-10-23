@@ -45,6 +45,7 @@ module "k8s_workload_nodes" {
   ami                         = data.aws_ami.ubuntu_latest.id
   instance_type               = each.value.instance_type
   iam_role_use_name_prefix    = each.value.iam_role_use_name_prefix
+  source_dest_check           = each.value.source_dest_check
   availability_zone           = element(module.vpc.azs, 0)
   key_name                    = each.value.key_name
   associate_public_ip_address = each.value.associate_public_ip_address
@@ -75,6 +76,7 @@ module "k8s_workload_nodes_slave" {
   name                        = each.value.name
   ami                         = data.aws_ami.ubuntu_latest.id
   instance_type               = each.value.instance_type
+  source_dest_check           = each.value.source_dest_check
   iam_role_use_name_prefix    = each.value.iam_role_use_name_prefix
   availability_zone           = element(module.vpc.azs, 0)
   key_name                    = each.value.key_name

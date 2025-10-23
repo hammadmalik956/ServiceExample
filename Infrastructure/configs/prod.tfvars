@@ -20,12 +20,13 @@ ec2 = {
       key_name                    = "mirsys-key"
       create_security_group       = false
       associate_public_ip_address = true
+      source_dest_check           = false
       instance_type               = "t3.medium"
       iam_role_use_name_prefix    = false
       create_iam_instance_profile = true
       iam_role_description        = "IAM role for EC2 instance"
       iam_role_policies = {
-        SSMParameterStoreAccess = "arn:aws:iam::055545057328:policy/SSMParameterPolici", 
+        SSMParameterStoreAccess = "arn:aws:iam::055545057328:policy/SSMParameterPolici",
         ECRAccessPolicy         = "arn:aws:iam::055545057328:policy/ECRAccessPolicy"
       }
       user_data_replace_on_change = true
@@ -51,6 +52,7 @@ ec2 = {
       key_name                    = "mirsys-key"
       associate_public_ip_address = true
       create_security_group       = false
+      source_dest_check           = false
       create_iam_instance_profile = true
       iam_role_use_name_prefix    = false
       iam_role_description        = "IAM role for EC2 instance"
@@ -80,6 +82,7 @@ ec2 = {
       instance_type               = "t3.medium"
       create_security_group       = false
       create_iam_instance_profile = true
+      source_dest_check           = false
       iam_role_description        = "IAM role for EC2 instance"
       iam_role_use_name_prefix    = false
       iam_role_policies = {
@@ -140,7 +143,7 @@ security_groups = {
         protocol                 = "tcp"
         to_port                  = 6443
       },
-       {
+      {
         source_security_group_id = null
         cidr_blocks              = ["0.0.0.0/0"]
         description              = "Kubernetes API server access within vpc"

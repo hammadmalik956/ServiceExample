@@ -1,0 +1,12 @@
+{{- if .Values.dependencies.mongo.storage.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.dependencies.mongo.storage.size }}
+{{- end }}
