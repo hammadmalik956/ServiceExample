@@ -1,11 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+metadata:
+  name: flux-controllers
+  namespace: flux-system
 resources:
-- gotk-components.yaml
-- gotk-sync.yaml
-- ../serviceexample/helmrepository.yml
-- ../serviceexample/helmrelease.yaml
-- ../serviceexample/image-repo.yml
-- ../serviceexample/image-policy.yml
-- ../serviceexample/image-update-automation.yml
+  - gotk-components.yaml
+  - gotk-sync.yaml
+
 
