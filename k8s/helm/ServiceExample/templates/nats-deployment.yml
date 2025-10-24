@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats
+spec:
+  replicas: {{ .Values.dependencies.nats.replicas }}
+  selector:
+    matchLabels:
+      app: nats
+  template:
+    metadata:
+      labels:
+        app: nats
+    spec:
+      containers:
+        - name: nats
+          image: {{ .Values.dependencies.nats.image }}
+          ports:
+            - containerPort: {{ .Values.dependencies.nats.port }}

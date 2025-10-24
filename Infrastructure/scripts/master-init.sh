@@ -81,7 +81,7 @@ aws_metadata_token=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-
 PRIVATE_IP=`curl -H "X-aws-ec2-metadata-token: $aws_metadata_token" http://169.254.169.254/latest/meta-data/local-ipv4`
 echo "My private IP is $PRIVATE_IP"
 
-kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address=$PRIVATE_IP --node-name master
+kubeadm init --pod-network-cidr=172.16.0.0/16 --apiserver-advertise-address=$PRIVATE_IP --node-name master
 
 mkdir -p $HOME/.kube
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -89,13 +89,12 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.4/manifests/tigera-operator.yaml
 
-
 while ! kubectl get crd installations.operator.tigera.io &>/dev/null; do
   echo "Waiting for Calico CRDs..."
   sleep 10
 done
 curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.4/manifests/custom-resources.yaml -O
-
+sed -i 's/^\(\s*cidr:\s*\).*$/\1172.16.0.0\/16/' custom-resources.yaml
 
 kubectl apply -f custom-resources.yaml
 

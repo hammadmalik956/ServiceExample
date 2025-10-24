@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: {{ .Values.dependencies.mongo.replicas }}
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: {{ .Values.dependencies.mongo.image }}
+          ports:
+            - containerPort: {{ .Values.dependencies.mongo.port }}
+          volumeMounts:
+{{- if .Values.dependencies.mongo.storage.enabled }}
+            - name: mongo-data
+              mountPath: /data/db
+{{- end }}
+      volumes:
+{{- if .Values.dependencies.mongo.storage.enabled }}
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: mongo-pvc
+{{- end }}
