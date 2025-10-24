@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of replicas for the main service"
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "repository": { "type": "string" },
+        "tag": { "type": "string" },
+        "pullPolicy": { 
+          "type": "string",
+          "enum": ["Always", "IfNotPresent", "Never"]
+        }
+      },
+      "required": ["repository", "tag"]
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"]
+        },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "nodePort": { "type": "integer", "minimum": 30000, "maximum": 32767 }
+      },
+      "required": ["type", "port"]
+    },
+    "env": {
+      "type": "object",
+      "properties": {
+        "Aspire__MongoDB__Driver__ConnectionString": { "type": "string" },
+        "Aspire__StackExchange__Redis__ConnectionString": { "type": "string" },
+        "Aspire__NATS__Net__ConnectionString": { "type": "string" }
+      },
+      "required": [
+        "Aspire__MongoDB__Driver__ConnectionString",
+        "Aspire__StackExchange__Redis__ConnectionString",
+        "Aspire__NATS__Net__ConnectionString"
+      ]
+    },
+    "dependencies": {
+      "type": "object",
+      "properties": {
+        "mongo": {
+          "type": "object",
+          "properties": {
+            "image": { "type": "string" },
+            "port": { "type": "integer" },
+            "replicas": { "type": "integer", "minimum": 1 },
+            "storage": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "size": { "type": "string" }
+              },
+              "required": ["enabled", "size"]
+            }
+          },
+          "required": ["image", "port", "replicas", "storage"]
+        },
+        "redis": {
+          "type": "object",
+          "properties": {
+            "image": { "type": "string" },
+            "port": { "type": "integer" },
+            "replicas": { "type": "integer", "minimum": 1 },
+            "storage": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "size": { "type": "string" }
+              },
+              "required": ["enabled", "size"]
+            }
+          },
+          "required": ["image", "port", "replicas", "storage"]
+        },
+        "nats": {
+          "type": "object",
+          "properties": {
+            "image": { "type": "string" },
+            "port": { "type": "integer" },
+            "replicas": { "type": "integer", "minimum": 1 }
+          },
+          "required": ["image", "port", "replicas"]
+        }
+      },
+      "required": ["mongo", "redis", "nats"]
+    }
+  },
+  "required": ["replicaCount", "image", "service", "env", "dependencies"]
+}
