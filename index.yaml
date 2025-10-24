@@ -9,6 +9,6 @@ entries:
     name: serviceexample
     type: application
     urls:
-    - https://hammadmalik956.github.io/ServiceExample/service-example-app/service-example-app/serviceexample-0.1.0.tgz
+    - https://hammadmalik956.github.io/ServiceExample/serviceexample-0.1.0.tgz
     version: 0.1.0
 generated: "2025-10-24T21:39:12.030877+03:00"
