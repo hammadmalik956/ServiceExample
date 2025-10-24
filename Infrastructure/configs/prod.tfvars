@@ -135,6 +135,14 @@ security_groups = {
         protocol                 = "tcp"
         to_port                  = 2380
       },
+       {
+        source_security_group_id = null
+        cidr_blocks              = ["10.0.0.0/16"]
+        description              = "calico bgp access within vpc "
+        from_port                = 179
+        protocol                 = "tcp"
+        to_port                  = 179
+      },
       {
         source_security_group_id = null
         cidr_blocks              = ["10.0.0.0/16"]
@@ -176,6 +184,14 @@ security_groups = {
         from_port                = 10256
         protocol                 = "tcp"
         to_port                  = 10256
+      },
+       {
+        source_security_group_id = null
+        cidr_blocks              = ["10.0.0.0/16"]
+        description              = "calico bgp access within vpc "
+        from_port                = 179
+        protocol                 = "tcp"
+        to_port                  = 179
       },
       {
         source_security_group_id = null
@@ -224,6 +240,14 @@ security_groups = {
         from_port                = 10256
         protocol                 = "tcp"
         to_port                  = 10256
+      },
+       {
+        source_security_group_id = null
+        cidr_blocks              = ["10.0.0.0/16"]
+        description              = "calico bgp access within vpc "
+        from_port                = 179
+        protocol                 = "tcp"
+        to_port                  = 179
       },
       {
         source_security_group_id = null
