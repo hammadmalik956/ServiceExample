@@ -3,12 +3,12 @@ entries:
   serviceexample:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-10-24T21:27:15.775221+03:00"
+    created: "2025-10-24T21:39:12.032214+03:00"
     description: Helm chart for ServiceExample app with MongoDB, Redis, and NATS
     digest: e5f795aa39142575fcdae57615eb9c215bc756e572a2a95e589ef3b8bdbb36f8
     name: serviceexample
     type: application
     urls:
-    - serviceexample-0.1.0.tgz
+    - https://hammadmalik956.github.io/ServiceExample/service-example-app/service-example-app/serviceexample-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-24T21:27:15.77455+03:00"
+generated: "2025-10-24T21:39:12.030877+03:00"
