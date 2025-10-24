@@ -1,0 +1,17 @@
+# 5️⃣ Image Update Automation (patch HelmRelease)
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageUpdateAutomation
+metadata:
+  name: serviceexample
+  namespace: flux-system
+spec:
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: ./fluxcd/serviceexample  # your GitOps repo containing the HelmRelease
+  git:
+    commit:
+      authorName: hammadhameed956
+      authorEmail: hammadhameed956@github.com
+    push:
+      branch: main

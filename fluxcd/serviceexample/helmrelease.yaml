@@ -1,17 +1,20 @@
+# 2️⃣ Helm Release (already deployed)
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: serviceexample
   namespace: default
 spec:
-  interval: 1m
+  interval: 5m
   chart:
     spec:
-      chart: ./k8s/helm/ServiceExample
+      chart: serviceexample
       sourceRef:
-        kind: GitRepository
-        name: serviceexample-chart
+        kind: HelmRepository
+        name: serviceexample
+        namespace: flux-system
+      version: ">=0.1.0"  # picks the latest chart version
   values:
     image:
       repository: public.ecr.aws/a1f9o5p6/serviceexample
-      tag: "image://serviceexample-latest"
+      tag: ""  # Flux Image Update will populate this automatically

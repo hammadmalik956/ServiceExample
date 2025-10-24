@@ -1,3 +1,4 @@
+# 3️⃣ Image Repository (ECR)
 apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImageRepository
 metadata:

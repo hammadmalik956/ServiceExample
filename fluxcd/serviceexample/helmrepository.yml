@@ -1,0 +1,9 @@
+# 1️⃣ Helm Repository (Artifact Hub)
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: serviceexample
+  namespace: flux-system
+spec:
+  url: https://hammadmalik956.github.io/ServiceExample/
+  interval: 10m

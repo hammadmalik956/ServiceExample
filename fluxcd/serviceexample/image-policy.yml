@@ -1,10 +1,12 @@
+# 4️⃣ Image Policy (select latest commit tag)
 apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImagePolicy
 metadata:
-  name: serviceexample-latest
+  name: serviceexample
   namespace: flux-system
 spec:
   imageRepositoryRef:
     name: serviceexample
   policy:
-    regex: "^[0-9a-f]{7,40}$"   #
+    semver:
+      range: ">=0.0.0"  # automatically pick the latest tag

@@ -3,3 +3,9 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
+- ../serviceexample/helmrepository.yml
+- ../serviceexample/helmrelease.yaml
+- ../serviceexample/image-repo.yml
+- ../serviceexample/image-policy.yml
+- ../serviceexample/image-update-automation.yml
+
