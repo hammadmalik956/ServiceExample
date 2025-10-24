@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: public.ecr.aws/a1f9o5p6/serviceexample
-  tag: "881f1ad"
+  tag: ""
   pullPolicy: IfNotPresent
 
 service:

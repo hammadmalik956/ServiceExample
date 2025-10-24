@@ -9,5 +9,4 @@ resources:
   - helmrelease.yaml
   - image-update-automation.yaml
   - helmrepository.yaml
-dependsOn:
-  - name: flux-controllers
+
