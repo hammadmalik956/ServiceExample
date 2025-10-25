@@ -16,7 +16,7 @@ spec:
       author:
         name: fluxcdbot
         email: fluxcdbot@users.noreply.github.com
-      messageTemplate: "chore: update ServiceExample image to "
+      messageTemplate: "chore: update ServiceExample image to {{range .Updated.Images}}{{println .}}{{end}}"
     push:
       branch: main
   update:
