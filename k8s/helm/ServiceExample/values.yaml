@@ -8,7 +8,7 @@ image:
 service:
   type: NodePort
   port: 9080
-  nodePort: 30080
+  nodePort: 30080 
 
 env:
   Aspire__MongoDB__Driver__ConnectionString: "mongodb://mongo:27017"
