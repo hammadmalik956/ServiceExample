@@ -1,0 +1,66 @@
+name: Helm Chart CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'k8s/helm/**'
+  release:
+    types: [ published ]
+
+jobs:
+  lint_and_template:
+    name: Validate Helm Chart
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Lint and Template Helm Chart
+        working-directory: k8s/helm/ServiceExample
+        run: |
+          helm dependency update
+          helm lint . --strict
+          helm template test . --debug
+
+  release:
+    name: Package and Publish Helm Chart
+    needs: lint_and_template
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' && github.ref == 'refs/heads/main' ||
+      github.event_name == 'release'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Package Helm Chart
+        working-directory: k8s/helm/ServiceExample
+        run: |
+          helm dependency update
+          helm package . -d ../../..
+          echo "Chart packaged and moved to repo root"
+
+      - name: Generate Helm repo index
+        run: |
+          helm repo index . --url https://hammadmalik956.github.io/ServiceExample/
+          echo "index.yaml generated in repo root"
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          keep_files: true
