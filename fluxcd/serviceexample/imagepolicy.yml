@@ -8,5 +8,8 @@ spec:
     name: serviceexample-image
   policy:
     alphabetical:
-      order: asc
+      order: desc
+  filterTags:
+    pattern: "^[a-f0-9]{6,}$"
+    extract: "$0"
 
