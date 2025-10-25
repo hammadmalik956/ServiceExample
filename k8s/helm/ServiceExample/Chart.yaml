@@ -1,0 +1,6 @@
+apiVersion: v2
+name: serviceexample
+description: Helm chart for ServiceExample app with MongoDB, Redis, and NATS
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

@@ -1,0 +1,37 @@
+replicaCount: 1
+
+image:
+  repository: public.ecr.aws/a1f9o5p6/serviceexample
+  tag: ""
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 9080
+  nodePort: 30080 
+
+env:
+  Aspire__MongoDB__Driver__ConnectionString: "mongodb://mongo:27017"
+  Aspire__StackExchange__Redis__ConnectionString: "redis:6379"
+  Aspire__NATS__Net__ConnectionString: "nats://nats:4222"
+
+dependencies:
+  mongo:
+    image: mongo:latest
+    port: 27017
+    replicas: 1
+    storage:
+      enabled: true
+      size: 5Gi
+  redis:
+    image: redis:latest
+    port: 6379
+    replicas: 1
+    storage:
+      enabled: true
+      size: 2Gi
+  nats:
+    image: nats:latest
+    port: 4222
+    replicas: 1
+

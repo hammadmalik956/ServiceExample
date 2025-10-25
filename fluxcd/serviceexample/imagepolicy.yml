@@ -1,0 +1,13 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: serviceexample-policy
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: serviceexample-image
+  policy:
+    numerical:
+      order: asc
+
+
