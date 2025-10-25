@@ -16,4 +16,5 @@ spec:
         namespace: flux-system
   values:
     image:
-      repository:  #{"$imagepolicy": "flux-system:serviceexample-policy"}
+      repository: public.ecr.aws/a1f9o5p6/serviceexample
+      tag: # {"$imagepolicy": "flux-system:serviceexample-policy"}
