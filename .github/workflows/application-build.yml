@@ -51,18 +51,18 @@ jobs:
       - name: Build Docker Image
         working-directory: ServiceExample
         run: |
-          IMAGE_TAG=${GITHUB_SHA::7}
+          IMAGE_TAG=${GITHUB_RUN_NUMBER}
           docker build -t ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
 
       - name: Tag Docker Image
         run: |
-          IMAGE_TAG=${GITHUB_SHA::7}
+          IMAGE_TAG=${GITHUB_RUN_NUMBER}
           docker tag ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG \
             ${{ env.PUBLIC_ECR_URI }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
 
       - name: Push Docker Image to Public ECR
         run: |
-          IMAGE_TAG=${GITHUB_SHA::7}
+          IMAGE_TAG=${GITHUB_RUN_NUMBER}
           docker push ${{ env.PUBLIC_ECR_URI }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
 
       # - name: Sign Docker Image with AWS Signer
