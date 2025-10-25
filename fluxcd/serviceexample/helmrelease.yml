@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: serviceexample
-  namespace: default
+  namespace: flux-system
 spec:
   interval: 5m
   releaseName: serviceexample
@@ -17,4 +17,4 @@ spec:
   values:
     image:
       repository: public.ecr.aws/a1f9o5p6/serviceexample
-      tag: "public.ecr.aws/a1f9o5p6/serviceexample:113ecb8" # {"$imagepolicy": "flux-system:serviceexample-policy"}
+      tag: # {"$imagepolicy": "flux-system:serviceexample-policy"}
