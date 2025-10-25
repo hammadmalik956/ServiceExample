@@ -20,5 +20,5 @@ spec:
     push:
       branch: main
   update:
-    path: fluxcd/serviceexample
+    path: ./fluxcd/serviceexample
     strategy: Setters
