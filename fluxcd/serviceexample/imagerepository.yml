@@ -1,8 +1,0 @@
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImageRepository
-metadata:
-  name: serviceexample-image
-  namespace: flux-system
-spec:
-  image: public.ecr.aws/a1f9o5p6/serviceexample
-  interval: 1m
