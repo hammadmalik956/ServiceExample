@@ -7,7 +7,7 @@ spec:
   imageRepositoryRef:
     name: serviceexample-image
   policy:
-    alphabetical:
-      order: desc
+    numerical:
+      order: asc
 
 
