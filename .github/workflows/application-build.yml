@@ -65,26 +65,5 @@ jobs:
           IMAGE_TAG=${GITHUB_RUN_NUMBER}
           docker push ${{ env.PUBLIC_ECR_URI }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
 
-      # - name: Sign Docker Image with AWS Signer
-      #   run: |
-      #     IMAGE_TAG=${{ github.sha }}
-      #     IMAGE_URI=${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
-          
-      #     echo "Starting AWS Signer signing job for $IMAGE_URI"
-          
-      #     JOB_ID=$(aws signer start-signing-job \
-      #       --source "image=${IMAGE_URI}" \
-      #       --destination '{"type": "ecr"}' \
-      #       --region ${{ env.AWS_REGION }} \
-      #       --profile default \
-      #       --query 'jobId' --output text)
 
-      #     echo "Started signing job: $JOB_ID"
-
-      #     # Wait until signing job completes
-      #     aws signer wait signing-job-completed \
-      #       --job-id "$JOB_ID" \
-      #       --region ${{ env.AWS_REGION }}
-
-      #     echo "Docker image signed successfully: $IMAGE_URI"
 
