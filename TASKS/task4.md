@@ -14,7 +14,7 @@ Automatically deploy the application whenever a new version is released.
 
 ## Set up a self-managed Kubernetes cluster (e.g., using kubeadm).
 
-<img width="1850" height="239" alt="image" src="./images/k8s-selfhosted.png" />
+<img width="1850" height="946" alt="image" src="./images/k8s-selfhosted.png" />
 
 ## Github Actions Pipeline to deploy k8s on AWS
 
@@ -22,7 +22,7 @@ Automatically deploy the application whenever a new version is released.
 
 ## 
 
-<img width="1866" height="946" alt="image" src="./images/k8s-selfhosted.png" />
+<img width="1866" height="946" alt="image" src="./images/k8s-nodes.png" />
 
 ## Deploy a storage solution of your choice (e.g., Longhorn ).
 
@@ -55,7 +55,9 @@ Automatically deploy the application whenever a new version is released.
 
 <img width="1813" height="999" alt="image" src="./images/prometheus.png" />
 
-## Accessing the Application from K8s using URL: http://${nodeIp}:${nodeport}/swagger/index.html
+## Accessing the Application from K8s using URL: 
+
+http://${nodeIp}:${nodeport}/swagger/index.html
 
 ## Application is secured in private subnets and VPN must be connected to access the application
 
