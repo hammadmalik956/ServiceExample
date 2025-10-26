@@ -1,7 +1,7 @@
 # 🏗️ Infrastructure Setup — Kubernetes (EKS) with Terraform & FluxCD
 
-## Loom video : https://www.loom.com/share/652587fefa764a1d86ca3027535c884a
 
+## Loom Video: https://www.loom.com/share/652587fefa764a1d86ca3027535c884a
 
 
 This repository provisions and configures a complete **Kubernetes infrastructure** on AWS using **Terraform**, **FluxCD**, and **GitHub Actions**.  
