@@ -1,5 +1,9 @@
 # 🏗️ Infrastructure Setup — Kubernetes (EKS) with Terraform & FluxCD
 
+## Loom video : https://www.loom.com/share/652587fefa764a1d86ca3027535c884a
+
+
+
 This repository provisions and configures a complete **Kubernetes infrastructure** on AWS using **Terraform**, **FluxCD**, and **GitHub Actions**.  
 It automatically sets up:
 - **1 Master node**
@@ -40,5 +44,6 @@ Before running the **GitHub Actions pipeline**, configure the following reposito
 ## 🚀 Deployment via GitHub Actions
 
 Once secrets are configured, **just trigger the pipeline from appropriate action**
+
 
 
