@@ -11,7 +11,6 @@ permissions:
   contents: read     
 
 env:
-  AWS_REGION: us-east-2           
   ECR_REPOSITORY: serviceexample
   PUBLIC_ECR_URI: public.ecr.aws/a1f9o5p6
   DOTNET_VERSION: 9.0
@@ -28,8 +27,8 @@ jobs:
       - name: Configure AWS Credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::055545057328:role/gh-oidc-role
-          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4

@@ -18,7 +18,6 @@ permissions:
 
 env:
   TF_WORKING_DIR: Infrastructure
-  AWS_REGION: us-east-2   
 
 jobs:
   terraform:
@@ -33,7 +32,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::055545057328:role/gh-oidc-role
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Install Latest Terraform
         run: |
