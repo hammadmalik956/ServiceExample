@@ -17,4 +17,4 @@ spec:
   values:
     image:
       repository: public.ecr.aws/a1f9o5p6/serviceexample
-      tag: "30" # {"$imagepolicy": "flux-system:serviceexample-policy:tag"}
+      tag: "31" # {"$imagepolicy": "flux-system:serviceexample-policy:tag"}
