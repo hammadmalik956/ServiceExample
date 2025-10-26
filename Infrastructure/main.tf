@@ -49,7 +49,7 @@ module "k8s_workload_nodes" {
   availability_zone           = element(module.vpc.azs, 0)
   key_name                    = each.value.key_name
   associate_public_ip_address = each.value.associate_public_ip_address
-  subnet_id                   = element(module.vpc.public_subnets, 0)
+  subnet_id                   = element(module.vpc.private_subnets, 0)
   vpc_security_group_ids      = [module.k8s_sg_shells["${each.key}_sg"].id]
   create_security_group       = each.value.create_security_group
 
@@ -81,7 +81,7 @@ module "k8s_workload_nodes_slave" {
   availability_zone           = element(module.vpc.azs, 0)
   key_name                    = each.value.key_name
   associate_public_ip_address = each.value.associate_public_ip_address
-  subnet_id                   = element(module.vpc.public_subnets, 0)
+  subnet_id                   = element(module.vpc.private_subnets, 0)
   vpc_security_group_ids      = [module.k8s_sg_shells["${each.key}_sg"].id]
   create_security_group       = each.value.create_security_group
 
