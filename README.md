@@ -35,7 +35,7 @@ Before running the **GitHub Actions pipeline**, configure the following reposito
 | Secret Name       | Description |
 |-------------------|-------------|
 | `AWS_OIDC_ROLE`   | ARN of the IAM role allowing GitHub OIDC access to AWS |
-| `AWS_REGION`      | AWS region to deploy the infrastructure (e.g., `us-east-1`) |
+| `AWS_REGION`      | AWS region to deploy the infrastructure (e.g., `us-east-2`) |
 
 > These are used by the GitHub Action to authenticate with AWS using OpenID Connect (OIDC) — no static credentials required.
 
